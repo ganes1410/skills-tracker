@@ -9,6 +9,7 @@ import {
 export const users = sqliteTable("users", {
   id: text("id").notNull().primaryKey(),
   name: text("name"),
+  profile_image: text("profile_image"),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -36,21 +37,25 @@ export const skillsRelations = relations(skills, ({ many }) => ({
 export const usersToSkills = sqliteTable(
   "users_to_skills",
   {
-    userId: integer("user_id")
+    userId: text("user_id")
       .notNull()
       .references(() => users.id),
-    skillsId: integer("skills_id")
+    skillId: text("skill_id")
       .notNull()
       .references(() => skills.id),
+    experience: integer("experience").notNull(),
+    proficiency: text("proficiency", {
+      enum: ["beginner", "intermediate", "expert"],
+    }),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.skillsId] }),
+    pk: primaryKey({ columns: [t.userId, t.skillId] }),
   })
 );
 
 export const usersToSkillsRelations = relations(usersToSkills, ({ one }) => ({
   skill: one(skills, {
-    fields: [usersToSkills.skillsId],
+    fields: [usersToSkills.skillId],
     references: [skills.id],
   }),
   user: one(users, {
