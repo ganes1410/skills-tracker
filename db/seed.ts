@@ -68,13 +68,13 @@ async function main() {
       skillIds = Array.from(new Set([...skillIds, skillId]));
     }
 
-    console.log({ skillIds, 0: skillIds[0] });
+    console.log({ skillIds });
 
     for (let skillIndex = 0; skillIndex < skillIds.length; skillIndex++) {
       usersToSkillsList.push({
         userId: user.id,
-        skillId: skillIds[index],
-        experience: Math.floor(Math.random() * 15),
+        skillId: skillIds[skillIndex],
+        experience: Math.floor(Math.random() * 15 + 1),
         proficiency:
           allProficiency[Math.floor(Math.random() * allProficiency.length)],
       });
