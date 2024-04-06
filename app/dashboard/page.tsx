@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import UserCard from "../ui/user-card";
+import UserCard from "@/components/user-card";
 import {
   like,
   and,
@@ -10,8 +10,8 @@ import {
   inArray,
 } from "drizzle-orm";
 import { skills, users, usersToSkills } from "@/db/schema";
-import SearchFilter from "../ui/filters/search-filter";
-import SkillFilter from "../ui/filters/skill-filter-server";
+import SearchFilter from "@/components/filters/search-filter";
+import SkillFilter from "@/components/filters/skill-filter-server";
 
 export default async function Dashboard({
   searchParams,

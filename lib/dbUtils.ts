@@ -22,6 +22,4 @@ export const syncUser = async () => {
   if (!user) {
     redirect("/onboarding");
   }
-
-  redirect("/dashboard");
 };
