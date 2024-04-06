@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import SelectSkillCombobox from "@/components/form/SelectSkillCombobox";
-
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Skill } from "@/db/schema";
 import { useState } from "react";
 import SkillProficiencySlider from "@/components/form/SkillProficiencySlider";
@@ -27,6 +27,7 @@ export default function AddSkillForm({
 }) {
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [proficiencyLevel, setProficiencyLevel] = useState(1);
+  const [parent] = useAutoAnimate();
 
   const onAddSkill = async (skill: Skill) => {
     setSelectedSkill(skill);
@@ -65,7 +66,7 @@ export default function AddSkillForm({
                 You can also set your proficiency level here.
               </DrawerDescription>
             </DrawerHeader>
-            <div className="px-4 my-4">
+            <div ref={parent} className="px-4 my-4">
               <SelectSkillCombobox
                 selectedSkill={selectedSkill}
                 onAddSkill={onAddSkill}
