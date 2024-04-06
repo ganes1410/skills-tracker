@@ -10,8 +10,8 @@ import {
 export const users = sqliteTable("users", {
   id: text("id").default(uuidv4()).primaryKey(),
   clerkId: text("clerk_id").unique().notNull(),
-  name: text("name"),
-  email: text("email"),
+  name: text("name").notNull(),
+  email: text("email").unique().notNull(),
   profileImageUrl: text("profile_image_url"),
   createdAt: text("created_at")
     .notNull()
@@ -73,5 +73,4 @@ export const usersToSkillsRelations = relations(usersToSkills, ({ one }) => ({
   }),
 }));
 
-
-export type Skill = typeof skills.$inferSelect
+export type Skill = typeof skills.$inferSelect;

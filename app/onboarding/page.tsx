@@ -1,8 +1,25 @@
-import AppInput from "@/components/form/AppInput";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import CreateUserForm from "@/components/form/CreateUserForm";
+import { db } from "@/db";
+import { skills } from "@/db/schema";
+import { like } from "drizzle-orm";
+import { Suspense } from "react";
 
-export default async function Onboarding() {
+export default async function Onboarding({
+  searchParams,
+}: {
+  searchParams: {
+    skillsearch?: string;
+  };
+}) {
+  const searchQuery = Boolean(searchParams?.skillsearch)
+    ? like(skills.name, "%" + searchParams.skillsearch + "%")
+    : undefined;
+
+  const skillsList = await db.query.skills.findMany({
+    limit: 5,
+    where: searchQuery,
+  });
+
   return (
     <div>
       <h1 className="font-black text-3xl">Let&apos;s get you set up!</h1>
@@ -10,18 +27,9 @@ export default async function Onboarding() {
         Please update these details before we can take you to the world&apos;s
         most beautiful dashboard.
       </p>
-      <form className="my-8">
-        <AppInput label="Name" name="name">
-          <Input type="text" id="name" placeholder="Enter your full name" />
-        </AppInput>
-        <AppInput label="Email" name="email">
-          <Input
-            type="email"
-            id="email"
-            placeholder="Enter your primary email"
-          />
-        </AppInput>
-      </form>
+      <Suspense>
+        <CreateUserForm skillsList={skillsList} />
+      </Suspense>
     </div>
   );
 }
