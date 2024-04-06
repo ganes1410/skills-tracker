@@ -72,3 +72,6 @@ export const usersToSkillsRelations = relations(usersToSkills, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+
+export type Skill = typeof skills.$inferSelect

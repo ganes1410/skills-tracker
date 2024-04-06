@@ -1,3 +1,76 @@
-export default async function Dashboard() {
-  return <div>Dashboard</div>;
+import { db } from "@/db";
+import UserCard from "../ui/user-card";
+import {
+  like,
+  and,
+  eq,
+  arrayContained,
+  arrayContains,
+  arrayOverlaps,
+  inArray,
+} from "drizzle-orm";
+import { skills, users, usersToSkills } from "@/db/schema";
+import SearchFilter from "../ui/filters/search-filter";
+import SkillFilter from "../ui/filters/skill-filter-server";
+
+export default async function Dashboard({
+  searchParams,
+}: {
+  searchParams?: {
+    q?: string;
+    skills?: string;
+  };
+}) {
+  const query = searchParams?.q || "";
+  const skillsQueryVal = searchParams?.skills || "";
+  const searchQuery = Boolean(query)
+    ? like(users.name, "%" + query + "%")
+    : undefined;
+
+  const skillIds = JSON.parse(skillsQueryVal || "[]").map(
+    (skill: { value: string }) => skill.value
+  );
+
+  const allSkillIds = await db.select({ id: skills.id }).from(skills);
+  console.log({ skillIds, allSkillIds });
+  const allUsersWithSkills = await db.query.users.findMany({
+    with: {
+      usersToSkills: {
+        with: {
+          skill: true,
+        },
+        where: skillIds.length > 0 ? inArray(skills.id, skillIds) : undefined,
+      },
+    },
+    where: searchQuery,
+  });
+
+  console.log({ query2: query, skillsQueryVal });
+
+  return (
+    <>
+      <SearchFilter />
+      <SkillFilter />
+
+      {allUsersWithSkills.length === 0 ? (
+        <p> No users found</p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {allUsersWithSkills.map((user) => {
+            const skills = user.usersToSkills.map(
+              (userToSkill) => userToSkill.skill
+            );
+            return (
+              <UserCard
+                key={user.id}
+                userName={user.name}
+                profileImage={user.profile_image}
+                skills={skills}
+              />
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
 }
