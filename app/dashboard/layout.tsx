@@ -1,12 +1,11 @@
-export default function DashboardLayout({
+import { syncUser } from "@/lib/dbUtils";
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div>
-      Dashboard Layout
-      {children}
-    </div>
-  );
+  await syncUser();
+
+  return <div>{children}</div>;
 }

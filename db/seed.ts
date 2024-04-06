@@ -35,6 +35,7 @@ async function main() {
   for (let i = 0; i < TOTAL_USERS; i++) {
     const user = {
       id: faker.database.mongodbObjectId(),
+      clerkId: faker.database.mongodbObjectId(),
       name: faker.person.fullName(),
       profile_image: faker.image.avatar(),
     };

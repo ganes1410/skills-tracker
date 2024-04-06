@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { relations, sql } from "drizzle-orm";
 import {
   integer,
@@ -7,9 +8,17 @@ import {
 } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
-  id: text("id").notNull().primaryKey(),
+  id: text("id").default(uuidv4()).primaryKey(),
+  clerkId: text("clerk_id").unique().notNull(),
   name: text("name"),
-  profile_image: text("profile_image"),
+  email: text("email"),
+  profileImageUrl: text("profile_image_url"),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
