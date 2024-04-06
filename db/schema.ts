@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import {  relations, sql } from "drizzle-orm";
 import {
   integer,
   primaryKey,
@@ -63,3 +63,6 @@ export const usersToSkillsRelations = relations(usersToSkills, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+
+export type Skill = typeof skills.$inferSelect
