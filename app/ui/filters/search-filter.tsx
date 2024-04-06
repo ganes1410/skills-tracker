@@ -3,32 +3,9 @@ import { Input } from "@/components/ui/input";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { FilterParams } from "@/lib/definitions";
 
-function SearchFilter({
-  defaultValue,
-  createQueryString,
-}: {
-  defaultValue: string;
-  createQueryString: (name: string, value: string) => void;
-}) {
-  const handleSearch = useDebouncedCallback((term) => {
-    createQueryString("q", term);
-  }, 300);
-
-  return (
-    <div className="mb-10 w-full">
-      <Input
-        defaultValue={defaultValue}
-        type="search"
-        placeholder="Search Users"
-        onChange={(event) => {
-          handleSearch(event.target.value);
-        }}
-      />
-    </div>
-  );
-}
-function UserFilters() {
+function SearchFilter() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -46,12 +23,22 @@ function UserFilters() {
     [searchParams]
   );
 
+  const handleSearch = useDebouncedCallback((term) => {
+    createQueryString("q", term);
+  }, 300);
+
   return (
-    <SearchFilter
-      defaultValue={searchParams.get("q") || ""}
-      createQueryString={createQueryString}
-    />
+    <div className="mb-10 w-full">
+      <Input
+        defaultValue={searchParams.get("q") || ""}
+        type="search"
+        placeholder="Search Users"
+        onChange={(event) => {
+          handleSearch(event.target.value);
+        }}
+      />
+    </div>
   );
 }
 
-export default UserFilters;
+export default SearchFilter;

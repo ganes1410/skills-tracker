@@ -1,34 +1,57 @@
 import { db } from "@/db";
 import UserCard from "../ui/user-card";
-import UserFilters from "../ui/user-filters";
-import { like } from "drizzle-orm";
-import { users } from "@/db/schema";
+import {
+  like,
+  and,
+  eq,
+  arrayContained,
+  arrayContains,
+  arrayOverlaps,
+  inArray,
+} from "drizzle-orm";
+import { skills, users, usersToSkills } from "@/db/schema";
+import SearchFilter from "../ui/filters/search-filter";
+import SkillFilter from "../ui/filters/skill-filter-server";
 
 export default async function Dashboard({
   searchParams,
 }: {
   searchParams?: {
     q?: string;
+    skills?: string;
   };
 }) {
   const query = searchParams?.q || "";
-  console.log({ query2: query });
+  const skillsQueryVal = searchParams?.skills || "";
+  const searchQuery = Boolean(query)
+    ? like(users.name, "%" + query + "%")
+    : undefined;
+
+  const skillIds = JSON.parse(skillsQueryVal || "[]").map(
+    (skill: { value: string }) => skill.value
+  );
+
+  const allSkillIds = await db.select({ id: skills.id }).from(skills);
+  console.log({ skillIds, allSkillIds });
   const allUsersWithSkills = await db.query.users.findMany({
     with: {
       usersToSkills: {
         with: {
           skill: true,
         },
+        where: skillIds.length > 0 ? inArray(skills.id, skillIds) : undefined,
       },
     },
-    where: Boolean(query) ? like(users.name, "%" + query + "%") : undefined,
+    where: searchQuery,
   });
 
-  console.log({ allUsersWithSkills, query });
+  console.log({ query2: query, skillsQueryVal });
 
   return (
     <>
-      <UserFilters />
+      <SearchFilter />
+      <SkillFilter />
+
       {allUsersWithSkills.length === 0 ? (
         <p> No users found</p>
       ) : (
