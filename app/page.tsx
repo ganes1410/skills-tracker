@@ -1,31 +1,23 @@
-import { db } from "@/db";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default async function Home() {
-  const allUsersWithSkills = await db.query.users.findMany({
-    with: {
-      usersToSkills: {
-        with: {
-          skill: true,
-        },
-      },
-    },
-  });
-
   return (
-    <main className="flex min-h-screen flex-col  justify-between p-24">
-      <h1>Skills Tracker</h1>
-      {allUsersWithSkills.map((user) => (
-        <div key={user.id} className="mb-10">
-          <p>{user.name}</p>
-
-          <p>Skills:</p>
-          <ul>
-            {user.usersToSkills.map((userToSkill) => (
-              <li key={userToSkill.skillId}>{userToSkill.skill.name}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <main className="flex flex-col justify-center items-center min-h-screen min-w-screen p-24">
+      <h1 className="text-3xl font-black">
+        <span className="text-2xl text-orange-600">S</span>killer app
+      </h1>
+      <div>
+        <Link
+          href="/dashboard"
+          className={cn(buttonVariants({ variant: "default" }), "my-4")}
+        >
+          <SignedIn>Go to Dashboard</SignedIn>
+          <SignedOut>Get Started</SignedOut>
+        </Link>
+      </div>
     </main>
   );
 }
