@@ -30,6 +30,7 @@ export default function SkillsList({
             <SkillProficiencySlider
               className="flex-[0.25]"
               defaultValue={[proficiencyIndex]}
+              value={[proficiencyIndex]}
               max={2}
               step={1}
               onValueChange={(value) => {
@@ -39,7 +40,7 @@ export default function SkillsList({
                 });
               }}
             />
-            <p className="text-sm text-right font-semibold flex-[0.25]">
+            <p className="text-sm text-right font-semibold flex-[0.25] capitalize">
               {PROFICIENCY_LEVELS[proficiencyIndex]}
             </p>
             <Button

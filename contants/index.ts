@@ -1,1 +1,5 @@
-export const PROFICIENCY_LEVELS = ["Beginner", "Intermediate", "Expert"];
+export const PROFICIENCY_LEVELS = [
+  "beginner",
+  "intermediate",
+  "expert",
+] as const;

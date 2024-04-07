@@ -90,7 +90,7 @@ export default function AddSkillForm({
                     />
                     <p
                       className={cn(
-                        "mt-4 font-bold",
+                        "mt-4 font-bold capitalize",
                         proficiencyLevel === 2
                           ? "text-right"
                           : proficiencyLevel === 1

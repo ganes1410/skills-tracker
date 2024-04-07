@@ -31,7 +31,17 @@ export default function CreateUserForm({
       return;
     }
 
-    toast.error("Skill already added");
+    const updatedSkillsList = addedSkillsList.map((skill) => {
+      if (skill.id === skillWithProficiency.id) {
+        return skillWithProficiency;
+      }
+
+      return skill;
+    });
+
+    setAddedSkillsList(updatedSkillsList);
+
+    toast.info("Skill proficiency level updated");
   };
 
   const onRemoveSkillFromList = (skillId: string) => {
