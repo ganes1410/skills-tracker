@@ -38,6 +38,7 @@ async function main() {
       clerkId: faker.database.mongodbObjectId(),
       name: faker.person.fullName(),
       profile_image: faker.image.avatar(),
+      email: faker.internet.email(),
     };
 
     usersList.push(user);

@@ -17,13 +17,14 @@ import { useState } from "react";
 import SkillProficiencySlider from "@/components/form/SkillProficiencySlider";
 import { cn } from "@/lib/utils";
 import { SkillWithProficiency } from "@/types";
+import { PROFICIENCY_LEVELS } from "@/contants";
 
 export default function AddSkillForm({
-  skillsList,
+  hasSkills,
   onAddSkillToList,
 }: {
-  skillsList: Skill[];
   onAddSkillToList: (skill: SkillWithProficiency) => void;
+  hasSkills?: boolean;
 }) {
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [proficiencyLevel, setProficiencyLevel] = useState(1);
@@ -44,7 +45,7 @@ export default function AddSkillForm({
   const handleAddSkillToList = () => {
     onAddSkillToList({
       ...selectedSkill!,
-      proficiency: ["Beginner", "Intermediate", "Expert"][proficiencyLevel],
+      proficiency: PROFICIENCY_LEVELS[proficiencyLevel],
     });
     setSelectedSkill(null);
     setProficiencyLevel(1);
@@ -55,7 +56,7 @@ export default function AddSkillForm({
       <Drawer>
         <DrawerTrigger asChild>
           <Button type="button" variant="outline" className="max-w-36">
-            Add skill
+            {hasSkills ? "Add another skill" : "Add skill"}
           </Button>
         </DrawerTrigger>
         <DrawerContent>
@@ -70,7 +71,6 @@ export default function AddSkillForm({
               <SelectSkillCombobox
                 selectedSkill={selectedSkill}
                 onAddSkill={onAddSkill}
-                list={skillsList}
               />
               {selectedSkill && (
                 <div className="mt-8">
@@ -95,7 +95,7 @@ export default function AddSkillForm({
                           : "text-left"
                       )}
                     >
-                      {["Beginner", "Intermediate", "Expert"][proficiencyLevel]}
+                      {PROFICIENCY_LEVELS[proficiencyLevel]}
                     </p>
                   </div>
                 </div>
