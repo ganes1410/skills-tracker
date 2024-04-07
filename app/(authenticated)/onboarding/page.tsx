@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { UsersToSkills, skills, users, usersToSkills } from "@/db/schema";
 import { SkillWithProficiency } from "@/types";
 import { auth } from "@clerk/nextjs";
-import { Placeholder, SQL, like } from "drizzle-orm";
+import { like } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 export default async function Onboarding({
@@ -66,7 +66,7 @@ export default async function Onboarding({
         Please update these details before we can take you to the world&apos;s
         most beautiful dashboard.
       </p>
-      <CreateUserForm skillsList={skillsList} onSubmitCreateUser={createUser} />
+      <CreateUserForm skillsList={skillsList} onSubmit={createUser} />
     </div>
   );
 }

@@ -11,14 +11,20 @@ import { toast } from "sonner";
 
 export default function CreateUserForm({
   skillsList,
-  onSubmitCreateUser,
+  onSubmit,
+  defaultValues,
 }: {
   skillsList: Skill[];
-  onSubmitCreateUser: (data: any) => void;
+  onSubmit: (data: any) => void;
+  defaultValues?: {
+    email: string;
+    name: string;
+    skills: SkillWithProficiency[];
+  };
 }) {
   const [addedSkillsList, setAddedSkillsList] = useState<
     SkillWithProficiency[]
-  >([]);
+  >(() => defaultValues?.skills ?? []);
 
   const onAddSkillToList = (skillWithProficiency: SkillWithProficiency) => {
     const match = addedSkillsList.find(
@@ -52,7 +58,7 @@ export default function CreateUserForm({
     setAddedSkillsList(updatedSkillsList);
   };
 
-  const onSubmit = (formData: FormData) => {
+  const onUserChangesDone = (formData: FormData) => {
     if (!addedSkillsList.length) {
       toast.error("Please add at least one skill");
 
@@ -68,11 +74,11 @@ export default function CreateUserForm({
       })),
     };
 
-    onSubmitCreateUser(rawFormData);
+    onSubmit(rawFormData);
   };
 
   return (
-    <form className="my-8" action={onSubmit}>
+    <form className="my-8" action={onUserChangesDone}>
       <AppInput label="Name" name="name">
         <Input
           type="text"
@@ -80,6 +86,7 @@ export default function CreateUserForm({
           id="name"
           placeholder="Enter your full name"
           required
+          defaultValue={defaultValues?.name}
         />
       </AppInput>
       <AppInput label="Email" name="email">
@@ -89,6 +96,7 @@ export default function CreateUserForm({
           id="email"
           required
           placeholder="Enter your primary email"
+          defaultValue={defaultValues?.email}
         />
       </AppInput>
       <AppInput label="Skills" name="skills">

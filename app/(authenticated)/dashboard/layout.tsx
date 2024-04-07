@@ -1,5 +1,3 @@
-import { syncUser } from "@/lib/dbUtils";
-
 export default async function DashboardLayout({
   children,
 }: {
