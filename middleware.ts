@@ -24,6 +24,11 @@ export default authMiddleware({
       const onboarding = new URL("/onboarding", req.url);
       return NextResponse.redirect(onboarding);
     }
+
+    if (user && req.url.includes("onboarding")) {
+      const dashboard = new URL("/dashboard", req.url);
+      return NextResponse.redirect(dashboard);
+    }
     // Allow users visiting public routes to access them
     return NextResponse.next();
   },
