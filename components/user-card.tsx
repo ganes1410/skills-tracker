@@ -1,4 +1,5 @@
 import type { Skill } from "@/db/schema";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,42 +8,56 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { AvatarIcon } from "@radix-ui/react-icons";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
-function UserCard({
+export default function UserCard({
+  userId = "",
   userName = "",
   profileImage = "",
   skills = [],
 }: {
+  userId: string;
   userName: string | null;
   profileImage: string | null;
   skills: Skill[];
 }) {
   return (
-    <Card className="w-full">
+    <Card className="w-full flex flex-col bg-white">
       {/* Edit Button */}
       <CardHeader>
-        <CardTitle>{userName}</CardTitle>
-        <CardDescription>Frontend</CardDescription>
+        <div className="flex items-start">
+          <AvatarIcon className="w-8 h-auto mr-2" />
+          <div>
+            <CardTitle>{userName}</CardTitle>
+            <CardDescription>Frontend</CardDescription>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
-        <p>Skills</p>
-        <ul className="flex flex-wrap space-x-2 text-gray-600 dark:text-gray-400 justify-center">
+        <h4 className="font-black underline underline-offset-4 mb-2">Skills</h4>
+        <ul className="flex flex-wrap gap-2 text-gray-600 dark:text-gray-400">
           {skills.map((skill) => (
-            <li
-              key={skill.id}
-              className="bg-gray-200 dark:bg-gray-700 rounded-md px-2 py-0.5"
-            >
-              {skill.name}
+            <li key={skill.id}>
+              <Badge
+                variant="default"
+                className="bg-gray-200 text-black hover:text-white cursor-pointer"
+              >
+                {skill.name}
+              </Badge>
             </li>
           ))}
         </ul>
       </CardContent>
-      <CardFooter>
-        <Button>View profile</Button>
+      <CardFooter className="mt-auto ml-auto">
+        <Link
+          href={`/dashboard/${userId}`}
+          className={buttonVariants({ variant: "default" })}
+        >
+          View profile
+        </Link>
       </CardFooter>
     </Card>
   );
 }
-
-export default UserCard;

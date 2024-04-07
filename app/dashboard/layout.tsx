@@ -5,5 +5,5 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="min-h-screen container p-24">{children}</main>;
+  return <main className="min-h-screen container py-16">{children}</main>;
 }

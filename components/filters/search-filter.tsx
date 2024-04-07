@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import useNavigationUtils from "@/hooks/useNavigationUtils";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 function SearchFilter() {
   const router = useRouter();
@@ -15,8 +16,9 @@ function SearchFilter() {
   }, 300);
 
   return (
-    <div className="mb-10 w-full max-w-md">
+    <div className="mb-10 w-full max-w-md mx-auto relative">
       <Input
+        className="pl-8"
         defaultValue={getQueryString()?.get("q") || ""}
         type="search"
         placeholder="Search Users"
@@ -24,6 +26,7 @@ function SearchFilter() {
           handleSearch(event.target.value);
         }}
       />
+      <MagnifyingGlassIcon className="w-6 h-auto absolute left-2 top-1.5" />
     </div>
   );
 }
