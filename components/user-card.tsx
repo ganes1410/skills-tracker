@@ -8,9 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AvatarIcon } from "@radix-ui/react-icons";
+import { AvatarIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function UserCard({
   userId = "",
@@ -27,14 +28,25 @@ export default function UserCard({
 }) {
   return (
     <Card className="w-full flex flex-col bg-white">
-      {isCurrentUser ? <Link href="/my-profile">Edit</Link> : null}
       <CardHeader>
-        <div className="flex items-start">
-          <AvatarIcon className="w-8 h-auto mr-2" />
-          <div>
-            <CardTitle>{userName}</CardTitle>
-            <CardDescription>Frontend</CardDescription>
+        <div className="flex items-start justify-between">
+          <div className="flex">
+            <AvatarIcon className="w-8 h-auto mr-2" />
+            <div>
+              <CardTitle>{userName}</CardTitle>
+              <CardDescription>Frontend</CardDescription>
+            </div>
           </div>
+          {isCurrentUser ? (
+            <Link
+              href="/my-profile"
+              className={cn(
+                buttonVariants({ variant: "default", size: "icon" })
+              )}
+            >
+              <Pencil1Icon className="w-5 h-auto" />
+            </Link>
+          ) : null}
         </div>
       </CardHeader>
       <CardContent>
