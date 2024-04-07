@@ -22,9 +22,11 @@ import { PROFICIENCY_LEVELS } from "@/contants";
 export default function AddSkillForm({
   hasSkills,
   onAddSkillToList,
+  skillsList,
 }: {
   onAddSkillToList: (skill: SkillWithProficiency) => void;
   hasSkills?: boolean;
+  skillsList: Skill[];
 }) {
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [proficiencyLevel, setProficiencyLevel] = useState(1);
@@ -71,6 +73,7 @@ export default function AddSkillForm({
               <SelectSkillCombobox
                 selectedSkill={selectedSkill}
                 onAddSkill={onAddSkill}
+                list={skillsList}
               />
               {selectedSkill && (
                 <div className="mt-8">

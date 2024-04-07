@@ -5,24 +5,26 @@ import { cn } from "@/lib/utils";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
-import useNavigationUtils from "@/hooks/useNavigationUtils";
-import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import useNavigationUtils from "@/hooks/useNavigationUtils";
 
 export default function SelectSkillCombobox({
   selectedSkill,
   onAddSkill,
+  list,
 }: {
   selectedSkill: Skill | null;
   onAddSkill: (skill: Skill) => Promise<void>;
+  list: Skill[];
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const { createQueryString } = useNavigationUtils();
 
-  const [allSkillsList, setAllSkillsList] = useState<Skill[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-
   const handleSearch = useDebouncedCallback((term) => {
-    setSearchQuery(term);
+    router.replace(`${pathname}?${createQueryString("skillsearch", term)}`);
   }, 300);
 
   const handleSkillSelect = (skill: Skill) => {
@@ -33,17 +35,6 @@ export default function SelectSkillCombobox({
     handleSearch("");
   }, [handleSearch]);
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      const response = await fetch(`/api/skills?skillsearch=${searchQuery}`);
-      const skills = await response.json();
-
-      setAllSkillsList(skills);
-    };
-
-    fetchSkills();
-  }, [searchQuery]);
-
   return (
     <div className="rounded-lg border shadow-md min-h-64">
       <Input
@@ -53,11 +44,11 @@ export default function SelectSkillCombobox({
         }}
       />
       <div>
-        {!allSkillsList?.length ? (
+        {!list?.length ? (
           <p className="text-sm text-center py-8">No results found.</p>
         ) : (
           <div className="pt-2">
-            {allSkillsList.map((skill) => (
+            {list.map((skill) => (
               <div
                 key={skill.id}
                 onClick={() => handleSkillSelect(skill)}

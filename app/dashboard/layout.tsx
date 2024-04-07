@@ -5,8 +5,6 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await syncUser();
-
   return (
     <main className="flex flex-col justify-center items-center min-h-screen min-w-screen p-24">
       {children}

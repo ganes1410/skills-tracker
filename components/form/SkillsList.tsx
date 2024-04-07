@@ -2,16 +2,23 @@
 import { SkillWithProficiency } from "@/types";
 import SkillProficiencySlider from "@/components/form/SkillProficiencySlider";
 import { PROFICIENCY_LEVELS } from "@/contants";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export default function SkillsList({
   skills,
   onUpdateProficiencyLevel,
+  onRemoveSkillFromList,
 }: {
   skills: SkillWithProficiency[];
   onUpdateProficiencyLevel: (skill: SkillWithProficiency) => void;
+  onRemoveSkillFromList: (skillId: string) => void;
 }) {
+  const [parent] = useAutoAnimate();
+
   return (
-    <div>
+    <div ref={parent}>
       {skills.map((skill) => {
         const proficiencyIndex = PROFICIENCY_LEVELS.indexOf(skill.proficiency);
         return (
@@ -35,6 +42,14 @@ export default function SkillsList({
             <p className="text-sm text-right font-semibold flex-[0.25]">
               {PROFICIENCY_LEVELS[proficiencyIndex]}
             </p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => onRemoveSkillFromList(skill.id)}
+            >
+              <TrashIcon color="red" />
+            </Button>
           </div>
         );
       })}

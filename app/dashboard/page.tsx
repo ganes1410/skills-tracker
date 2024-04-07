@@ -39,7 +39,7 @@ export default async function Dashboard({
         with: {
           skill: true,
         },
-        where: skillIds.length > 0 ? inArray(skills.id, skillIds) : undefined,
+        // where: skillIds.length > 0 ? inArray(skills.id, skillIds) : undefined,
       },
     },
     where: searchQuery,
@@ -64,7 +64,7 @@ export default async function Dashboard({
               <UserCard
                 key={user.id}
                 userName={user.name}
-                profileImage={user.profile_image}
+                profileImage={user.profileImageUrl}
                 skills={skills}
               />
             );
