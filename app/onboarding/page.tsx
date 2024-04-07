@@ -1,5 +1,4 @@
 import CreateUserForm from "@/components/form/CreateUserForm";
-import { Suspense } from "react";
 
 export default function Onboarding() {
   return (
@@ -9,9 +8,7 @@ export default function Onboarding() {
         Please update these details before we can take you to the world&apos;s
         most beautiful dashboard.
       </p>
-      {/* <Suspense>
-        <CreateUserForm />
-      </Suspense> */}
+      <CreateUserForm />
     </div>
   );
 }

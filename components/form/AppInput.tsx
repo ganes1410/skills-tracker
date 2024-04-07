@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 
-export default async function AppInput({
+export default function AppInput({
   label,
   name,
   children,

@@ -3,7 +3,7 @@ import AddSkillForm from "@/components/form/AddSkillForm";
 import AppInput from "@/components/form/AppInput";
 import { Input } from "@/components/ui/input";
 import { SkillWithProficiency } from "@/types";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import SkillsList from "@/components/form/SkillsList";
 
 export default function CreateUserForm() {
