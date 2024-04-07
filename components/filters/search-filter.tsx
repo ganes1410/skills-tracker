@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { FilterParams } from "@/lib/definitions";
 
 function SearchFilter() {
   const router = useRouter();
@@ -20,7 +19,7 @@ function SearchFilter() {
       }
       router.replace(`${pathname}?${params.toString()}`);
     },
-    [searchParams]
+    [pathname, router, searchParams]
   );
 
   const handleSearch = useDebouncedCallback((term) => {
@@ -28,7 +27,7 @@ function SearchFilter() {
   }, 300);
 
   return (
-    <div className="mb-10 w-full">
+    <div className="mb-10 w-full max-w-md">
       <Input
         defaultValue={searchParams.get("q") || ""}
         type="search"

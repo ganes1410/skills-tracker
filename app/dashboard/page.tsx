@@ -1,14 +1,6 @@
 import { db } from "@/db";
 import UserCard from "@/components/user-card";
-import {
-  like,
-  and,
-  eq,
-  arrayContained,
-  arrayContains,
-  arrayOverlaps,
-  inArray,
-} from "drizzle-orm";
+import { like } from "drizzle-orm";
 import { skills, users, usersToSkills } from "@/db/schema";
 import SearchFilter from "@/components/filters/search-filter";
 import SkillFilter from "@/components/filters/skill-filter-server";
@@ -50,12 +42,11 @@ export default async function Dashboard({
   return (
     <>
       <SearchFilter />
-      <SkillFilter />
 
       {allUsersWithSkills.length === 0 ? (
         <p> No users found</p>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-4 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 pt-4 sm:mt-8 sm:pt-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {allUsersWithSkills.map((user) => {
             const skills = user.usersToSkills.map(
               (userToSkill) => userToSkill.skill
