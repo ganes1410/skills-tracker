@@ -1,8 +1,9 @@
 import { db } from "@/db";
 import UserCard from "@/components/user-card";
 import { like } from "drizzle-orm";
-import { skills, users, usersToSkills } from "@/db/schema";
+import { users } from "@/db/schema";
 import SearchFilter from "@/components/filters/search-filter";
+import { currentUser } from "@clerk/nextjs";
 
 export default async function Dashboard({
   searchParams,
@@ -16,6 +17,8 @@ export default async function Dashboard({
   const searchQuery = Boolean(query)
     ? like(users.name, "%" + query + "%")
     : undefined;
+
+  const currentUserInfo = await currentUser();
 
   const allUsersWithSkills = await db.query.users.findMany({
     with: {
@@ -47,6 +50,7 @@ export default async function Dashboard({
                 userId={user.id}
                 profileImage={user.profileImageUrl}
                 skills={skills}
+                isCurrentUser={currentUserInfo?.id === user.clerkId}
               />
             );
           })}

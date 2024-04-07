@@ -17,15 +17,17 @@ export default function UserCard({
   userName = "",
   profileImage = "",
   skills = [],
+  isCurrentUser,
 }: {
   userId: string;
   userName: string | null;
   profileImage: string | null;
   skills: Skill[];
+  isCurrentUser: boolean;
 }) {
   return (
     <Card className="w-full flex flex-col bg-white">
-      {/* Edit Button */}
+      {isCurrentUser ? <Link href="/my-profile">Edit</Link> : null}
       <CardHeader>
         <div className="flex items-start">
           <AvatarIcon className="w-8 h-auto mr-2" />
