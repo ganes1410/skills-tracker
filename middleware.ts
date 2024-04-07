@@ -12,6 +12,10 @@ export default authMiddleware({
       return redirectToSignIn({ returnBackUrl: req.url });
     }
 
+    if (auth.isPublicRoute) {
+      return NextResponse.next();
+    }
+
     const user = await db.query.users.findFirst({
       where: (users, { eq }) => eq(users.clerkId, auth.userId),
     });

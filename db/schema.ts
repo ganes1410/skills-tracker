@@ -52,7 +52,6 @@ export const usersToSkills = sqliteTable(
     skillId: text("skill_id")
       .notNull()
       .references(() => skills.id),
-    experience: integer("experience").notNull(),
     proficiency: text("proficiency", {
       enum: ["beginner", "intermediate", "expert"],
     }),
@@ -74,3 +73,5 @@ export const usersToSkillsRelations = relations(usersToSkills, ({ one }) => ({
 }));
 
 export type Skill = typeof skills.$inferSelect;
+
+export type UsersToSkills = typeof usersToSkills.$inferSelect;

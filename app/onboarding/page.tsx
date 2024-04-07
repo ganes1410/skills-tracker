@@ -1,8 +1,9 @@
 import CreateUserForm from "@/components/form/CreateUserForm";
 import { db } from "@/db";
-import { skills, users } from "@/db/schema";
+import { UsersToSkills, skills, users, usersToSkills } from "@/db/schema";
+import { SkillWithProficiency } from "@/types";
 import { auth } from "@clerk/nextjs";
-import { like } from "drizzle-orm";
+import { Placeholder, SQL, like } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 export default async function Onboarding({
@@ -22,10 +23,14 @@ export default async function Onboarding({
     where: searchQuery,
   });
 
-  async function createUser(data: any) {
+  async function createUser(data: {
+    name: string;
+    email: string;
+    skillsWithProficiency: SkillWithProficiency[];
+  }) {
     "use server";
 
-    console.log({ data, userId });
+    console.log({ data });
 
     const user = await db
       .insert(users)
@@ -36,7 +41,20 @@ export default async function Onboarding({
       })
       .returning();
 
-    if (user) {
+    if (user?.[0]) {
+      const createdUser = user[0];
+      const skillsToBeAdded: UsersToSkills[] = [];
+
+      data.skillsWithProficiency.forEach((skill) => {
+        skillsToBeAdded.push({
+          userId: createdUser.id,
+          skillId: skill.id,
+          proficiency: skill.proficiency,
+        });
+      });
+
+      await db.insert(usersToSkills).values(skillsToBeAdded);
+
       redirect("/dashboard");
     }
   }

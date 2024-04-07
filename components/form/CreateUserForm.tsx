@@ -31,15 +31,7 @@ export default function CreateUserForm({
       return;
     }
 
-    const updatedSkillsList = addedSkillsList.map((skill) => {
-      if (skill.id === skillWithProficiency.id) {
-        return skillWithProficiency;
-      }
-
-      return skill;
-    });
-
-    setAddedSkillsList(updatedSkillsList);
+    toast.error("Skill already added");
   };
 
   const onRemoveSkillFromList = (skillId: string) => {
@@ -60,7 +52,10 @@ export default function CreateUserForm({
     const rawFormData = {
       name: formData.get("name"),
       email: formData.get("email"),
-      skillIds: addedSkillsList.map((skill) => skill.id),
+      skillsWithProficiency: addedSkillsList.map((skill) => ({
+        id: skill.id,
+        proficiency: skill.proficiency,
+      })),
     };
 
     onSubmitCreateUser(rawFormData);
