@@ -1,7 +1,4 @@
 "use client";
-import { db } from "@/db";
-import { skills } from "@/db/schema";
-import { FilterParams } from "@/lib/definitions";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { MultiSelect } from "react-multi-select-component";

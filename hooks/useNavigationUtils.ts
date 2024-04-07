@@ -7,13 +7,17 @@ export default function useNavigationUtils() {
   const getQueryString = useCallback(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    return params.toString();
+    return params;
   }, [searchParams]);
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+      if (value) {
+        params.set(name, value);
+      } else {
+        params.delete(name);
+      }
 
       return params.toString();
     },

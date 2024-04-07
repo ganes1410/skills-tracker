@@ -1,36 +1,23 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { FilterParams } from "@/lib/definitions";
+import useNavigationUtils from "@/hooks/useNavigationUtils";
 
 function SearchFilter() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set(name, value);
-      } else {
-        params.delete(name);
-      }
-      router.replace(`${pathname}?${params.toString()}`);
-    },
-    [searchParams]
-  );
+  const { createQueryString, getQueryString } = useNavigationUtils();
 
   const handleSearch = useDebouncedCallback((term) => {
-    createQueryString("q", term);
+    const qs = createQueryString("q", term);
+    router.replace(`${pathname}?${qs}`);
   }, 300);
 
   return (
     <div className="mb-10 w-full">
       <Input
-        defaultValue={searchParams.get("q") || ""}
+        defaultValue={getQueryString()?.get("q") || ""}
         type="search"
         placeholder="Search Users"
         onChange={(event) => {
