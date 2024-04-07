@@ -4,6 +4,7 @@ import { like } from "drizzle-orm";
 import { skills, users, usersToSkills } from "@/db/schema";
 import SearchFilter from "@/components/filters/search-filter";
 import SkillFilter from "@/components/filters/skill-filter-server";
+import { currentUser } from "@clerk/nextjs";
 
 export default async function Dashboard({
   searchParams,
@@ -18,7 +19,7 @@ export default async function Dashboard({
   const searchQuery = Boolean(query)
     ? like(users.name, "%" + query + "%")
     : undefined;
-
+  const currentUserInfo = await currentUser();
   const skillIds = JSON.parse(skillsQueryVal || "[]").map(
     (skill: { value: string }) => skill.value
   );
@@ -36,8 +37,6 @@ export default async function Dashboard({
     },
     where: searchQuery,
   });
-
-  console.log({ query2: query, skillsQueryVal });
 
   return (
     <>
@@ -57,6 +56,7 @@ export default async function Dashboard({
                 userName={user.name}
                 profileImage={user.profileImageUrl}
                 skills={skills}
+                isCurrentUser={currentUserInfo?.id === user.clerkId}
               />
             );
           })}

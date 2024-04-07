@@ -8,15 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function UserCard({
   userName = "",
   profileImage = "",
   skills = [],
+  isCurrentUser,
 }: {
   userName: string | null;
   profileImage: string | null;
   skills: Skill[];
+  isCurrentUser: boolean;
 }) {
   return (
     <Card className="w-full">
@@ -24,6 +27,7 @@ function UserCard({
       <CardHeader>
         <CardTitle>{userName}</CardTitle>
         <CardDescription>Frontend</CardDescription>
+        {isCurrentUser ? <Link href="/my-profile">Edit</Link> : null}
       </CardHeader>
       <CardContent>
         <p>Skills</p>
