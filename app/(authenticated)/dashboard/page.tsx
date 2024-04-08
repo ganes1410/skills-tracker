@@ -48,7 +48,6 @@ export default async function Dashboard({
                 key={user.id}
                 userName={user.name}
                 userId={user.id}
-                profileImage={user.profileImageUrl}
                 skills={skills}
                 isCurrentUser={currentUserInfo?.userId === user.clerkId}
               />

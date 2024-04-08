@@ -1,6 +1,7 @@
 import CreateUserForm from "@/components/form/CreateUserForm";
 import { db } from "@/db";
 import { UsersToSkills, skills, users, usersToSkills } from "@/db/schema";
+import { getUserDetails } from "@/lib/actions";
 import { SkillWithProficiency } from "@/types";
 import { auth } from "@clerk/nextjs";
 import { eq, like } from "drizzle-orm";
@@ -22,18 +23,11 @@ async function MyProfile({
     where: searchQuery,
   });
   const currentUser = auth();
-  const userDataQuery = await db.query.users.findMany({
-    with: {
-      usersToSkills: {
-        with: {
-          skill: true,
-        },
-      },
-    },
-    // @ts-ignore
-    where: eq(users.clerkId, currentUser.userId),
+
+  const userData = await getUserDetails({
+    userId: currentUser.userId ?? "",
+    isCurrentUser: true,
   });
-  const userData = userDataQuery?.[0];
 
   async function updateUser(data: {
     name: string;
@@ -71,6 +65,8 @@ async function MyProfile({
       redirect("/dashboard");
     }
   }
+  if (!userData) return null;
+
   return (
     <>
       <h1 className="font-semibold leading-none tracking-tight text-2xl">

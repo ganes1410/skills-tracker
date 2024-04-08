@@ -16,13 +16,11 @@ import { cn } from "@/lib/utils";
 export default function UserCard({
   userId = "",
   userName = "",
-  profileImage = "",
   skills = [],
   isCurrentUser,
 }: {
   userId: string;
   userName: string | null;
-  profileImage: string | null;
   skills: Skill[];
   isCurrentUser: boolean;
 }) {
@@ -66,7 +64,7 @@ export default function UserCard({
       </CardContent>
       <CardFooter className="mt-auto ml-auto">
         <Link
-          href={`/dashboard/${userId}`}
+          href={isCurrentUser ? "my-profile" : `/profile/${userId}`}
           className={buttonVariants({ variant: "default" })}
         >
           View profile
