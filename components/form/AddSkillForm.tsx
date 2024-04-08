@@ -24,7 +24,10 @@ export default function AddSkillForm({
   onAddSkillToList,
   skillsList,
 }: {
-  onAddSkillToList: (skill: SkillWithProficiency) => void;
+  onAddSkillToList: (
+    skill: SkillWithProficiency,
+    updatedFrom?: "list" | "drawer"
+  ) => void;
   hasSkills?: boolean;
   skillsList: Skill[];
 }) {
@@ -45,10 +48,13 @@ export default function AddSkillForm({
   };
 
   const handleAddSkillToList = () => {
-    onAddSkillToList({
-      ...selectedSkill!,
-      proficiency: PROFICIENCY_LEVELS[proficiencyLevel],
-    });
+    onAddSkillToList(
+      {
+        ...selectedSkill!,
+        proficiency: PROFICIENCY_LEVELS[proficiencyLevel],
+      },
+      "drawer"
+    );
     setSelectedSkill(null);
     setProficiencyLevel(1);
   };

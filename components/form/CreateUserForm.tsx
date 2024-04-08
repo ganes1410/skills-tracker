@@ -26,7 +26,10 @@ export default function CreateUserForm({
     SkillWithProficiency[]
   >(() => defaultValues?.skills ?? []);
 
-  const onAddSkillToList = (skillWithProficiency: SkillWithProficiency) => {
+  const onAddSkillToList = (
+    skillWithProficiency: SkillWithProficiency,
+    updatedFrom?: "list" | "drawer"
+  ) => {
     const match = addedSkillsList.find(
       (skill) => skill.id === skillWithProficiency.id
     );
@@ -47,7 +50,9 @@ export default function CreateUserForm({
 
     setAddedSkillsList(updatedSkillsList);
 
-    toast.info("Skill proficiency level updated");
+    if (updatedFrom === "drawer") {
+      toast.info("Skill proficiency level updated");
+    }
   };
 
   const onRemoveSkillFromList = (skillId: string) => {

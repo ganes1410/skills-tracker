@@ -12,7 +12,10 @@ export default function SkillsList({
   onRemoveSkillFromList,
 }: {
   skills: SkillWithProficiency[];
-  onUpdateProficiencyLevel: (skill: SkillWithProficiency) => void;
+  onUpdateProficiencyLevel: (
+    skill: SkillWithProficiency,
+    updatedFrom?: "list" | "drawer"
+  ) => void;
   onRemoveSkillFromList: (skillId: string) => void;
 }) {
   const [parent] = useAutoAnimate();
@@ -34,10 +37,13 @@ export default function SkillsList({
               max={2}
               step={1}
               onValueChange={(value) => {
-                onUpdateProficiencyLevel({
-                  ...skill,
-                  proficiency: PROFICIENCY_LEVELS[value[0]],
-                });
+                onUpdateProficiencyLevel(
+                  {
+                    ...skill,
+                    proficiency: PROFICIENCY_LEVELS[value[0]],
+                  },
+                  "list"
+                );
               }}
             />
             <p className="text-sm text-right font-semibold flex-[0.25] capitalize">
