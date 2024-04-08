@@ -17,7 +17,7 @@ export default authMiddleware({
     }
 
     const user = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.clerkId, auth.userId),
+      where: (users, { eq }) => eq(users.clerkId, auth?.userId ?? ""),
     });
 
     if (!user && !req.url.includes("onboarding")) {
