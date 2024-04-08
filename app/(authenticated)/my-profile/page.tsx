@@ -35,7 +35,6 @@ async function MyProfile({
   });
   const userData = userDataQuery?.[0];
 
-  console.log({ userData: JSON.stringify(userData) });
   async function updateUser(data: {
     name: string;
     email: string;
@@ -74,7 +73,9 @@ async function MyProfile({
   }
   return (
     <>
-      <h1>My Profile</h1>
+      <h1 className="font-semibold leading-none tracking-tight text-2xl">
+        My Profile
+      </h1>
       <CreateUserForm
         skillsList={skillsList}
         onSubmit={updateUser}
