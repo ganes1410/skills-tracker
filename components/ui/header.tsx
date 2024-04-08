@@ -27,7 +27,7 @@ function Header() {
               "bg-black text-white": pathname === "/my-profile",
             })}
           >
-            My profile
+            My Profile
           </Link>
         </div>
         <div className="mr-4">
