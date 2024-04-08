@@ -8,7 +8,19 @@ import SkillsList from "@/components/form/SkillsList";
 import { Skill } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useFormStatus } from "react-dom";
+import { CircleIcon, UpdateIcon } from "@radix-ui/react-icons";
 
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" variant="default" disabled={pending}>
+      Finish
+      {pending && <UpdateIcon className="ml-2 h-4 w-4  animate-spin" />}
+    </Button>
+  );
+}
 export default function CreateUserForm({
   skillsList,
   onSubmit,
@@ -117,9 +129,7 @@ export default function CreateUserForm({
         />
       </AppInput>
 
-      <Button type="submit" variant="default">
-        Finish
-      </Button>
+      <SubmitButton />
     </form>
   );
 }

@@ -36,8 +36,6 @@ async function MyProfile({
   }) {
     "use server";
 
-    console.log({ data });
-
     const user = await db
       .update(users)
       .set({ name: data.name, email: data.email })
