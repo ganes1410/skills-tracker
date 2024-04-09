@@ -9,7 +9,7 @@ import { Skill } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useFormStatus } from "react-dom";
-import { CircleIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { UpdateIcon } from "@radix-ui/react-icons";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
