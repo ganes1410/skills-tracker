@@ -4,6 +4,7 @@ import { like } from "drizzle-orm";
 import { users } from "@/db/schema";
 import SearchFilter from "@/components/filters/search-filter";
 import { auth } from "@clerk/nextjs";
+import { Suspense } from "react";
 
 export default async function Dashboard({
   searchParams,
@@ -39,20 +40,26 @@ export default async function Dashboard({
         <p className="text-center font-bold"> No users found</p>
       ) : (
         <div className="mx-auto mt-4 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-8 pt-4 sm:mt-8 sm:pt-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {allUsersWithSkills.map((user) => {
-            const skills = user.usersToSkills.map(
-              (userToSkill) => userToSkill.skill
-            );
-            return (
-              <UserCard
-                key={user.id}
-                userName={user.name}
-                userId={user.id}
-                skills={skills}
-                isCurrentUser={currentUserInfo?.userId === user.clerkId}
-              />
-            );
-          })}
+          <Suspense
+            fallback={
+              <p className="text-center font-black text-2xl">Loading...</p>
+            }
+          >
+            {allUsersWithSkills.map((user) => {
+              const skills = user.usersToSkills.map(
+                (userToSkill) => userToSkill.skill
+              );
+              return (
+                <UserCard
+                  key={user.id}
+                  userName={user.name}
+                  userId={user.id}
+                  skills={skills}
+                  isCurrentUser={currentUserInfo?.userId === user.clerkId}
+                />
+              );
+            })}
+          </Suspense>
         </div>
       )}
     </>
