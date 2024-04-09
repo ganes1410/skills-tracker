@@ -30,6 +30,7 @@ export default async function Dashboard({
     },
     where: searchQuery,
     orderBy: (users, { desc }) => [desc(users.updatedAt)],
+    limit: 30,
   });
 
   return (
