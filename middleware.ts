@@ -7,25 +7,25 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   // Allow signed out users to access the specified routes:
   async afterAuth(auth, req) {
+    if (auth.isPublicRoute) {
+      return NextResponse.next();
+    }
+
     // Handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
-    }
-
-    if (auth.isPublicRoute) {
-      return NextResponse.next();
     }
 
     const user = await db.query.users.findFirst({
       where: (users, { eq }) => eq(users.clerkId, auth?.userId ?? ""),
     });
 
-    if (!user && !req.url.includes("onboarding")) {
+    if (!user && req.nextUrl.pathname !== "/onboarding") {
       const onboarding = new URL("/onboarding", req.url);
       return NextResponse.redirect(onboarding);
     }
 
-    if (user && req.url.includes("onboarding")) {
+    if (user && req.nextUrl.pathname === "/onboarding") {
       const dashboard = new URL("/dashboard", req.url);
       return NextResponse.redirect(dashboard);
     }
