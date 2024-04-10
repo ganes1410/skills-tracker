@@ -17,7 +17,7 @@ import { useState } from "react";
 import SkillProficiencySlider from "@/components/form/SkillProficiencySlider";
 import { cn } from "@/lib/utils";
 import { SkillWithProficiency } from "@/types";
-import { PROFICIENCY_LEVELS } from "@/contants";
+import { PROFICIENCY_LEVELS } from "@/constants";
 
 export default function AddSkillForm({
   hasSkills,

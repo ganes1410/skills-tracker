@@ -1,7 +1,7 @@
 "use client";
 import { SkillWithProficiency } from "@/types";
 import SkillProficiencySlider from "@/components/form/SkillProficiencySlider";
-import { PROFICIENCY_LEVELS } from "@/contants";
+import { PROFICIENCY_LEVELS } from "@/constants";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
